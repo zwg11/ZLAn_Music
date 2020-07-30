@@ -7,6 +7,7 @@ const DjRadio = ()=> import ('views/discover/childRouter/DjRadio.vue')
 const Artist = ()=> import ('views/discover/childRouter/Artist.vue')
 const Album = ()=> import ('views/discover/childRouter/Album.vue')
 const Recommend = ()=> import ('views/discover/childRouter/Recommend.vue')
+const Detail = ()=> import ('views/albumdetail/Detail.vue')
 const routes = [
   {
     path: '/',
@@ -23,32 +24,41 @@ const routes = [
         component: Recommend
       },
       {
-        path: 'topList',
+        path: '/discover/topList',
         name: 'topList',
         component: TopList
       },
       {
-        path: 'playList',
+        path: '/discover/playList',
         name: 'playList',
         component: PlayList
+        
       },
       {
-        path: 'djradio',
+        path: '/discover/djradio',
         name: 'djradio',
         component: DjRadio
       },
       {
-        path: 'artist',
+        path: '/discover/artist',
         name: 'artist',
         component: Artist
       },
       {
-        path: 'album',
+        path: '/discover/album',
         name: 'album',
         component: Album
       },
+      {
+        path:'/discover/playlist/detail',
+        name: 'detail',
+        component: Detail
+      }
     ]
-  }
+  },
+  
+  
+  
 ]
 const router = new VueRouter({
   routes

@@ -42,15 +42,20 @@ export default {
       currentIndex:0,
       subNavList:['推荐','排行榜','歌单','主播电台','歌手','新碟上架'],
       currentSubIndex:0,
-      routeTo:['/','/discover/topList','playList','djradio','artist','album']
+      routeTo:['/','/discover/topList','/discover/playList','/discover/djradio','/discover/artist','/discover/album']
     }
   },
   methods:{
     toRoute(ind){
       this.currentSubIndex = ind;
-      console.log('to route');
       this.$router.push(this.routeTo[ind])
     }
+  },
+  mounted(){
+    this.$bus.$on('discoverToChild',this.toRoute)
+  },
+  beforeDestroy(){
+    this.$bus.$off('discoverToChild');
   }
 }
 </script>

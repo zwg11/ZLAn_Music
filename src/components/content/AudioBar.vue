@@ -114,6 +114,14 @@ export default {
     this.$refs.audio.volume = 0.2
   },
   methods:{
+    // 设置播放列表并立即播放
+    setMusics(){
+      
+    },
+    // 将音乐加入当前播放列表，可选择是否立即播放
+    addMusic(){
+
+    },
     // 控制音乐的播放和暂停
     playM(){
       if(this.onPlay){
@@ -184,7 +192,7 @@ export default {
 @import "assets/css/base.scss";
 @import "assets/css/config.scss";
   .audio-bar{
-    position: absolute;
+    position: fixed;
     bottom: 0;
     /* height: 70px; */
     width: 100%;
