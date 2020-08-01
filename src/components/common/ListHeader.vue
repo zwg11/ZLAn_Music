@@ -1,8 +1,7 @@
 <template>
   <div class="list-header">
     <a class="v-hd">{{title}}</a>
-    <div class="tab">
-
+    <div class="l-tab">
       <slot></slot>
     </div>
     <span class="more">
@@ -13,36 +12,57 @@
 </template>
 <script>
 export default {
-  name: 'listHeader',
-  props:{
-    title:{
+  name: "listHeader",
+  props: {
+    title: {
       type: String,
-      default:'歌单列表'
+      default: "歌单列表",
     },
-    hasMore:{
-      type:Boolean,
-      default:true
-    }
+    hasMore: {
+      type: Boolean,
+      default: true,
+    },
   },
-  methods:{
-    toUrl(){
-      this.$emit('to')
-    }
-  }
-}
+  methods: {
+    toUrl() {
+      this.$emit("to");
+    },
+  },
+};
 </script>
-<style lang="scss">
-.list-header{
+<style lang="scss" scoped>
+@import 'assets/css/base.scss';
+@import 'assets/css/config.scss';
+.list-header {
   height: 35px;
+  width: 100%;
   line-height: 35px;
-  border-bottom: 2px solid #c20c0c;
+  border-bottom: 2px solid $colorA;
   margin-bottom: 20px;
-  .tab{
+  .l-tab {
     float: left;
   }
-  .icon{
+  .v-hd,.icon {
+    background-image: url("~assets/img/index.png");
     vertical-align: middle;
-    background-image: url('~assets/img/index.png');
+  }
+  .v-hd {
+    float: left;
+    height: 33px;
+    font-size: 20px;
+    padding: 0 10px 0 34px;
+    background-position: -225px -156px;
+  }
+  .more {
+    float: right;
+    a {
+      color: black;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .icon {
     display: inline-block;
     width: 12px;
     height: 12px;

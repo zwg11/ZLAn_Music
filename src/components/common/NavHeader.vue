@@ -22,7 +22,7 @@
     </div>
     <div class="bottom-nav" :class="{'hide': currentIndex !== 0}">
       <div class="content">
-        <ul class="m-nav">
+        <ul class="sub-nav">
           <li v-for="(title, index) in subNavList" :key="index">
             <a href="javascript:;" class="subItem"  @click="toRoute(index)">
               <span :class="{'subActive':currentSubIndex === index}">{{title}}</span>
@@ -61,102 +61,105 @@ export default {
 </script>
 <style lang="scss">
 @import "assets/css/base.scss";
-  .header{
+  .nav-header{
     width: 100%;
-    height: 70px;
+    height: 104px;
     background-color: #242424;
     color: white;
-  }
-  .logo{
-    color: white;
-    margin:0 20px;
-    line-height: 70px;
-  }
-  .main-nav{
-    background-color: #242424;
-  }
-  .content{
-    width: 1100px;
-    height: 100%;
-    margin: 0 auto;
-  }
-  .other{
-    height: 70px;
-    line-height: 70px;
-
-  }
-  .search{
-    // height: 50%;
-    padding: 10px 10px 10px 30px;
-    border-radius: 17px;
-    // margin-right: 20px;
-  }
-  .txt{
-    color: white;
-    font-size: 12px;
-    margin-left: 20px;
-  }
-  .m-nav{
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-
-  .item{
-    position: relative;
-    display: inline-block;
-    line-height: 70px;
-    padding: 0 20px;
-    color: white;
-    font-size: 14px;
-  }
-  .item:hover{
-
-    background-color: black;
-  }
-  .is-active{
-    background-color: black;
-  }
-  .tri{
-    position: absolute;
-    width: 0;
-    height: 0;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-8px);
-    border: 8px solid transparent;
-    border-bottom: 8px solid #c20c0c;
-  }
-  .bottom-nav{
-    height: 34px;
-    background-color: #c20c0c;
-    overflow: hidden;
-    &.hide{
-      height: 5px;
+    .logo{
+      color: white;
+      margin:0 20px;
+      line-height: 70px;
     }
-  }
-  
-  .bottom-nav .m-nav{
-    margin-left: 130px;
-  }
-  .subItem{
-    height: 34px;
-    // line-height: 34px;
-    color: white;
-  }
-  .subItem span{
-    display: inline-block;
-    margin: 8px 17px;
-    height: 20px;
-    line-height: 20px;
-    padding:0 13px;
-    border-radius: 17px;
-  }
-  .subItem span:hover{
-    background-color: #980909;
-  }
-  .subActive{
-    background-color: #980909;
-    pointer-events: none;
+    .main-nav{
+      background-color: #242424;
+      border:none;
+    }
+    .content{
+      width: 1100px;
+      height: 100%;
+      margin: 0 auto;
+    }
+    .other{
+      height: 70px;
+      line-height: 70px;
+
+    }
+    .search{
+      // height: 50%;
+      padding: 10px 10px 10px 30px;
+      border-radius: 17px;
+      // margin-right: 20px;
+    }
+    .txt{
+      color: white;
+      font-size: 12px;
+      margin-left: 20px;
+    }
+    .m-nav,.sub-nav{
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+
+    .item{
+      position: relative;
+      display: inline-block;
+      line-height: 70px;
+      padding: 0 20px;
+      color: white;
+      font-size: 14px;
+    }
+    .item:hover{
+
+      background-color: black;
+    }
+    .is-active{
+      background-color: black;
+    }
+    .tri{
+      position: absolute;
+      width: 0;
+      height: 0;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-8px);
+      border: 8px solid transparent;
+      border-bottom: 8px solid #c20c0c;
+    }
+    .bottom-nav{
+      width: 100%;
+      height: 34px;
+      background-color: #c20c0c;
+      overflow: hidden;
+      &.hide{
+        height: 5px;
+      }
+    }
+    
+    .bottom-nav .sub-nav{
+      margin-left: 130px;
+      width: 100%;
+    }
+    .subItem{
+      height: 34px;
+      // line-height: 34px;
+      color: white;
+    }
+    .subItem span{
+      display: inline-block;
+      margin: 8px 17px;
+      height: 20px;
+      line-height: 20px;
+      padding:0 13px;
+      border-radius: 17px;
+    }
+    .subItem span:hover{
+      background-color: #980909;
+    }
+    .subActive{
+      background-color: #980909;
+      pointer-events: none;
+    }
   }
 </style>

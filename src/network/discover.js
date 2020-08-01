@@ -91,3 +91,15 @@ export function _getTopSongs(type){
         }
     })
 }
+/**新碟上架 */
+export function _getNewRecords(payload){
+    return request({
+        url:'/top/album',
+        params:{
+            limit:payload.limit || 10,
+            offset: payload.offset ? payload.offset:0,
+            area: payload.area || 'ZH',
+            type: payload.type || 'hot',
+        }
+    })
+}
