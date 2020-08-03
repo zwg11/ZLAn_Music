@@ -1,6 +1,6 @@
-import {request} from './request'
+import request from './request.js'
 
-import {formatDate} from "assets/common/tool"
+import {formatSecond} from "assets/Tools"
 export function _getMusicListDetail(id){
     return request({
         url:'/playlist/detail',
@@ -83,7 +83,20 @@ export class songDetail{
         this.album=songs[0].al.name;
         this.song=songs[0].ar[0].name;
         this.pic=songs[0].al.picUrl;
-        this.time=formatDate(new Date(songs[0].dt),'mm:ss')
+        this.time=formatSecond(songs[0].dt)
+    }
+}
+
+/**对歌曲播放数据进行封装 */
+export class songInf{
+    constructor(songs){
+        this.m_id=songs.id;
+        this.m_name=songs.name;
+        // this.album=songs[0].al.name;
+        this.m_by=songs.ar[0].name;
+        this.m_img=songs.al.picUrl;
+        // this.m_url = url
+        // this.time=formatSecond(songs[0].dt/1000)
     }
 }
 

@@ -27,6 +27,7 @@ export default {
     }
   },
   mounted(){
+    console.log(document.querySelector('.cur'));
     document.querySelector('.cur').style.width = (this.scale * 100) + '%'
   },
   methods:{
@@ -56,7 +57,7 @@ export default {
   watch:{
     scale(newVal){
       // 如果新值大于0且按钮没有被拖拽
-      if(newVal > 0 && !this.isOnDrag){
+      if(parseFloat(newVal) > 0 && !this.isOnDrag){
         // 设置当前进度条长度
         // console.log(`scale:${newVal}`);
         document.querySelector('.cur').style.width = `${newVal * 100}%`

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import AudioBar from 'components/content/AudioBar'
+import AudioBar from 'components/content/audio/AudioBar'
 import NavHeader from 'components/common/NavHeader'
 export default {
   name: 'App',

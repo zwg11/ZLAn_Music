@@ -27,8 +27,52 @@
 .clearfix:after{
   clear: both;
 }
+.a-hover:hover{
+  text-decoration: underline;
+}
 
 .container{
   width: 980px;
   margin: 0 auto;
+}
+.show{
+  display: block;
+}
+.m-bg{
+  background-color: #F7F7F7;
+}
+.itm{
+  background-color: #FFFFFF;
+}
+.msk{
+  background-image: url('~assets/img/coverall.png');
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.msk-0{ // 很大的
+  background-position: -230px -380px;
+}
+.msk-1{ // 较大的
+  background-position: 0 -0;
+}
+.msk-2{ // 中等的
+  background-position: 0 -680px;
+}
+.msk-3{ // 较小
+  background-position: -145px -57px;
+}
+
+.mska-1{ // 带唱片的，中等
+  width: 153px;
+  height: 130px;
+  background-position: 0 -845px;
+}
+.mska-2{ // 带唱片的，中等
+  width: 118px;
+  height: 100px;
+  background-position: 0 -570px;
 }

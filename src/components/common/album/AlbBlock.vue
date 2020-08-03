@@ -7,17 +7,18 @@
 
         <span class="icon-headset"></span>
         <span class="l-c">{{albumInfo.playCount}}</span>
-        <a href="" class="icon-play"></a>
+        <a href="javascript:;" class="icon-play" @click="playAlbum(albumInfo.id)"></a>
       </div>
     </div>
     <p class="describe">
       <!-- <i class="icn" v-if="isIcn"></i> -->
-      <a class="dc" href="">{{albumInfo.name}}</a>
+      <a class="dc" href="javascript:;">{{albumInfo.name}}</a>
     </p>
   </div>
 </template>
 <script>
 import {throttle} from 'assets/Tools.js'
+import {_getMusicListDetail} from 'network/detail.js'
 export default {
   name:'alb-block',
   props:{
@@ -43,6 +44,23 @@ export default {
       let thGet = throttle(this.getDetail, 1000);
       thGet(id);
     },
+    playAlbum(albId){
+      // const th_getMusicListDetail = throttle(_getMusicListDetail);
+      // 获取歌单歌曲信息
+      _getMusicListDetail(albId).then(res => {
+        // 提取出所有歌的id
+        const idList = res.playlist.trackIds.map(val=>{
+          // console.log(val);
+          return val.id
+        })
+        // console.log(idList);
+        this.$bus.$emit('toggleList', idList)
+        // console.log('***********');
+        // console.log(this.lst);
+      }).catch(err=>{
+        this.$toast.thShow('warn',err);
+      })
+    }
   }
 }
 </script>

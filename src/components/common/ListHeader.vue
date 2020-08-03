@@ -1,7 +1,7 @@
 <template>
   <div class="list-header">
-    <a class="v-hd">{{title}}</a>
-    <div class="l-tab">
+    <a class="v-hd fl" :class="{'plt':hasplt}">{{title}}</a>
+    <div class="l-tab fl">
       <slot></slot>
     </div>
     <span class="more">
@@ -19,6 +19,10 @@ export default {
       default: "歌单列表",
     },
     hasMore: {
+      type: Boolean,
+      default: true,
+    },
+    hasplt: {
       type: Boolean,
       default: true,
     },
@@ -42,16 +46,17 @@ export default {
   .l-tab {
     float: left;
   }
-  .v-hd,.icon {
+  .plt,.icon {
     background-image: url("~assets/img/index.png");
     vertical-align: middle;
   }
-  .v-hd {
-    float: left;
-    height: 33px;
-    font-size: 20px;
+  .plt{
     padding: 0 10px 0 34px;
     background-position: -225px -156px;
+  }
+  .v-hd {
+    height: 33px;
+    font-size: 20px;
   }
   .more {
     float: right;

@@ -2,9 +2,9 @@
   <div class="record">
     <div class="pic">
       <img class="rd-p" :src="rdInfo.picUrl" alt="">
-      <a href="javascript:;" class="bg" @click="thGetDetail(rdInfo.id)"></a>
+      <a href="javascript:;" class="bg msk mska-2" @click="thGetDetail(rdInfo.id)"></a>
       
-      <a href="javascript:;" class="icon-play"></a>
+      <!-- <a href="javascript:;" class="icon-play"></a> -->
       
     </div>
     <p class="name f-thide">
@@ -60,18 +60,17 @@ export default {
         height: 100%;
       }
       .bg, .icon-play{
-        position: absolute;
         display: block;
         
       }
       .bg{
-        left: 0;
-        top: 0;
-        width: 118px;
-        height: 100px;
-        position: absolute;
-        background-image: url('~assets/img/coverall.png');
-        background-position: 0 -570px;
+        // left: 0;
+        // top: 0;
+        // width: 118px;
+        // height: 100px;
+        // position: absolute;
+        // background-image: url('~assets/img/coverall.png');
+        // background-position: 0 -570px;
       }
       .icon-play{
         right: 10px;

@@ -92,7 +92,7 @@ export function _getTopSongs(type){
     })
 }
 /**新碟上架 */
-export function _getNewRecords(payload){
+export function _getAllNewRecords(payload){
     return request({
         url:'/top/album',
         params:{
@@ -101,5 +101,17 @@ export function _getNewRecords(payload){
             area: payload.area || 'ZH',
             type: payload.type || 'hot',
         }
+    })
+}
+/**新碟上架 */
+export function _getNewRecords(){
+    return request({
+        url:'/album/newest'
+    })
+}
+/**获取榜单摘要 */
+export function _getTopLists(){
+    return request({
+        url:'/toplist/detail'
     })
 }

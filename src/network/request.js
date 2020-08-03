@@ -10,8 +10,8 @@ export default function request(config) {
   }, err=>{
     return Promise.reject(err);
   });
-  install.interceptors.response.use(data=>{
-    return data;
+  install.interceptors.response.use(res=>{
+    return res.data;
   }, err=>{
     return Promise.reject(err);
   });

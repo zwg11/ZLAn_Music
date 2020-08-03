@@ -10,7 +10,7 @@
       </div>
       <div class="pic fl">
         <audio 
-          :src="playList[currentIndex].m_url" 
+          :src="m_url" 
           ref="audio" 
           id="audio" 
           autoplay
@@ -22,15 +22,15 @@
           @ended="musicEnded"
           
         ></audio>
-        <img class='m_img' :src="playList[currentIndex].m_img" alt="">
+        <img class='m_img' :src="playList[currentIndex].m_img || ''" alt="">
         <a href="javascript:;" class="mask"></a>
       </div>
       <!-- 播放信息显示 -->
       <div class="play">
         <div class="words">
-          <a href="javascript:;" class="name f-thide" :title="playList[currentIndex].m_name">{{playList[currentIndex].m_name}}</a>
-          <a  href="javascript:;" class="by f-thide">{{playList[currentIndex].m_by}}</a>
-          <a href="javascript:;" class="src" :title="playList[currentIndex].m_from"></a>
+          <a href="javascript:;" class="name f-thide" :title="playList[currentIndex].m_name || ''">{{playList[currentIndex].m_name || ''}}</a>
+          <a  href="javascript:;" class="by f-thide">{{playList[currentIndex].m_by || ''}}</a>
+          <a href="javascript:;" class="src" :title="playList[currentIndex].m_from || ''"></a>
         </div>
         <div class="m-pbar">
           <m-prog 
@@ -73,6 +73,8 @@
 </template>
 <script>
 import {formatSecond} from 'assets/Tools.js'
+// import {throttle} from 'assets/Tools.js'
+import {_getSongsDetail,songInf,_getMusicUrl} from 'network/detail.js'
 import MProg from 'components/common/MProgress.vue'
 import VProg from 'components/common/VProgress.vue'
 export default {
@@ -89,22 +91,15 @@ export default {
       duration: '00:00',
       m_pScale:0.0,
       showVol:false,
+      m_url:'',
+      idList:[1466643383],
       playList:[
         {
-          m_index: 0,
-          m_img:"https://p1.music.126.net/Y3MgpdL1iMno2g0yDnfMXQ==/109951165054657451.jpg",
-          m_name:"倒数",
-          m_by:"G.E.M.邓紫棋",
-          m_url:"http://m7.music.126.net/20200728133036/5ae4ae28a4244cd2376a4f6067b6d832/ymusic/f370/248b/7eb6/2465d8966bb5aed27ca25813add52b49.mp3",
-          m_from:'来自歌单',
-        },
-        {
-          m_index: 1,
-          m_img:"https://p1.music.126.net/Y3MgpdL1iMno2g0yDnfMXQ==/109951165054657451.jpg",
-          m_name:"有心人",
-          m_by:"G.E.M.邓紫棋",
-          m_url:"http://m7.music.126.net/20200729145539/bfcb588cab4c6a9fef8d2bd90ccf9a98/ymusic/0eb0/fd04/deaa/4e99cd9b69e8f26146c9d9b326ba3ce6.mp3",
-          m_from:'来自歌单',
+          "m_id":1466643383,
+          "m_name":"祝我快乐",
+          "m_by":"汪苏泷",
+          "m_img":"https://p1.music.126.net/jBAh_0-ErI-nhZCexazjQA==/109951165181706528.jpg",
+          // "m_url":"http://m7.music.126.net/20200803174407/f4261f987301f3c0fa84977b96ca8c92/ymusic/obj/w5zDlMODwrDDiGjCn8Ky/3419125426/11d6/1b3f/46fa/4d03e653ba8c15dc62a6db8357ad6373.mp3"
         }
       ]
 
@@ -112,42 +107,173 @@ export default {
   },
   mounted(){
     this.$refs.audio.volume = 0.2
+    this.$bus.$on('playAMusic',this.playAMusic) // payload: {id:String}
+    this.$bus.$on('addMusics',this.addMusics) // payload:{musics:Array,now:boolean}
+    this.$bus.$on('toggleList',this.toggleList) // payload:ids:Array
   },
   methods:{
     // 设置播放列表并立即播放
-    setMusics(){
+    playAMusic(id){
+      // 如果 原列表没有该音乐
+      if(this.idList.indexOf(id) === -1){
+        // 得到该歌的信息
+        _getSongsDetail(id).then(res=>{ 
+          // console.log(res);
+          let inf = new songInf(res.songs[0]);
+          // 将歌曲信息添加至列表
+          this.addMs(inf)
+          // 获取歌曲URL
+          return _getMusicUrl(inf.m_id)
+          
+        }).then(res=>{ // 成功得到该歌曲的URL
+          this.$toast.show('success', `加载音乐成功，正在尝试播放`)
+          // 设置当前下标
+          this.currentIndex = this.idList.indexOf(id)
+          // 播放
+          this.m_url = res.data[0].url
+          this.playM()
+        }).catch(err=>{
+          this.$toast.show('warn', `网络异常，无法获取音乐数据`)
+          console.log(err);
+        })
+      }
+    },
+    // 将一个或多个音乐加入当前播放列表，可选择是否立即播放
+    addMusics(payload){
+      console.log('添加音乐至列表');
+      let lt = payload.musicids
+      for(let musicid of lt){
+      // 去掉列表中已经有的
+        if(this.idList.indexOf(musicid) != -1){
+          // Promise.all([_getSongsDetail(musicid),_getMusicUrl(musicid)]).then(res=>{
+          lt.splice(this.idList.indexOf(musicid), 1)
+        }
+      }
+      _getSongsDetail(lt.join(',')).then(res=>{
+        // console.log(res);
+        let infs = res.songs.map(val=>{
+          return new songInf(val)
+        })
+        // 尝试添加进去
+        for(let inf of infs){
+          this.addMs(inf)
+        }
+        // 如果现在播放，获取该歌单的第一个歌的URL，播放他
+        if(payload.now){
+          return _getMusicUrl(payload.musicids[0])
+          
+        }else{
+          return 0
+        }
+        // this.currentIndex = 0
+        // this.$toast.show('success', `加载音乐成功，正在尝试播放`)
+        // this.playM()
+      }).then(res=>{
+        if(res === 0) return;
+        // 设置其播 放
+        console.log('将要播放');
+        console.log(res);
+        this.m_url = res.data.url
+        this.currentIndex = this.idList.indexOf(payload.musicids[0])
+      }).catch(err=>{
+        this.$toast.thShow('warn', `网络异常，无法获取音乐数据`)
+        console.log(err);
+      })
       
     },
-    // 将音乐加入当前播放列表，可选择是否立即播放
-    addMusic(){
 
+    // 向当前播放列表添加音乐
+    addMs(inf){
+      let ind = this.idList.indexOf(inf.m_id)
+      console.log(`音乐id:${inf.m_id}`);
+      // console.log(inf);
+      if( ind === -1){
+        this.idList.push(inf.m_id);
+        this.playList.push(inf);
+      }  
+    },
+    // 切换播放列表
+    toggleList(ids){
+      console.log('添加音乐至列表');
+      let mlist = [];
+      let idArr = ids.join(',')
+      // console.log(ids);
+      
+      _getSongsDetail(idArr).then(res=>{
+        // console.log(res);
+        // console.log(res.songs[0]);
+        // console.log(res.songs);
+        mlist = res.songs.map(val=>{
+          return new songInf(val)
+        })
+        console.log('得到了该歌单的信息');
+        // 重新设置当前播放列表
+        this.idList = ids;
+        this.playList = mlist;
+
+        // 获取列表中第一个歌id的URL
+        return _getMusicUrl(ids[0])
+        // this.currentIndex = 0
+        // this.$toast.show('success', `加载音乐成功，正在尝试播放`)
+        // this.playM()
+      }).then(res=>{
+        console.log(res);
+        this.m_url = res.data[0].url
+        this.currentIndex = 0
+      }).catch((err)=>{
+        this.$toast.thShow('warn', `网络异常，无法添加音乐至列表`)
+        console.log(err);
+      })  
     },
     // 控制音乐的播放和暂停
     playM(){
       if(this.onPlay){
         this.$refs.audio.pause()
+        this.onPlay = false
       }else{
-        this.$refs.audio.play()  
+
+        let pr = this.$refs.audio.play();
+        if(pr !== undefined){
+          pr.then(()=>{
+            console.log('bofang...');
+            // console.log(res);
+            this.onPlay = true
+            // this.$toast.show('success','音乐播放中。。。')
+            // this.m_pScale = 0.0
+          }).catch(err=>{
+            console.log(err);
+            this.$toast.show('warn','当前无法播放音频')
+          })
+        }
       }
-      this.onPlay = !this.onPlay
+      // this.onPlay = !this.onPlay
       // console.log(this.onPlay); 
       // this.duration = formatSecond(this.$refs.audio.duration)
     },
     // 切换音乐
     switchM(ind){
       console.log('switch');
+      this.m_pScale = 0.0
       const len =  this.playList.length;
       if(len === 0) return;
       let curI = this.currentIndex +  ind;
       if(curI < 0){
-        this.currentIndex = len - 1;
+        curI = len - 1;
       }
       else if(curI >= len){
-        this.currentIndex = 0;
-      }else{
-        this.currentIndex = curI;
+        curI = 0;
       }
-      this.$refs.audio.src = this.playList[this.currentIndex].m_url;
+      _getMusicUrl(this.idList[curI]).then(res=>{
+        console.log('dedao');
+        this.m_url = res.data[0].url
+        this.currentIndex = curI;
+        
+        // this.playM();
+      }).catch(err=>{
+        console.log('切换音频失败');
+        console.log(err);
+      })
+      
     },
     audioTimeUpdate(){
       let _audio = this.$refs.audio
@@ -185,6 +311,10 @@ export default {
     volBarShow(){
       this.showVol = !this.showVol;
     }
+  },
+  beforeDestroy(){
+    this.$bus.$off('playAMusic')
+    this.$bus.$off('addMusics')
   }
 }
 </script>
@@ -265,15 +395,15 @@ export default {
       width: 35px;
     }
     .m_img{
-      width: 40px;
-      height: 40px;
+      width: 33px;
+      height: 33px;
     }
     .mask{
       position: absolute;
       top: 0;
       left: 0;
-      width: 40px;
-      height: 40px;
+      width: 34px;
+      height: 34px;
       display: block;
       background-position: 0 -80px;
     }
