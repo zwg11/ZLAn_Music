@@ -65,11 +65,13 @@ export default {
   methods:{
     getMUrl(id){
       console.log(`音乐id:${id}`);
-      this.$bus.$emit('playAMusic',id)
+      // this.$bus.$emit('playAMusic',id)
+      this.$audio.playAMusic(id)
     },
     addMUrl(ids){
       console.log('添加');
-      this.$bus.$emit('addMusics',{'musicids':ids,now:false})
+      // this.$bus.$emit('addMusics',{'musicids':ids,now:false})
+      this.$audio.addMusics({'musicids':ids,now:false})
     }
   }
 }
@@ -78,7 +80,7 @@ export default {
 @import 'assets/css/base.scss';
 @import 'assets/css/config.scss';
 .simple-list{
-  // border: 1px solid $colorF;
+  
   .dtitle{
     display: block;
     height: 100px;
@@ -97,7 +99,7 @@ export default {
     }
   }
   .ddetail{
-    margin-left: 10px;
+    margin-left: 0;
     // ul{
     //   padding-left: 10px;
     // }

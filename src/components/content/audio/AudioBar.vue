@@ -22,15 +22,15 @@
           @ended="musicEnded"
           
         ></audio>
-        <img class='m_img' :src="playList[currentIndex].m_img || ''" alt="">
+        <img class='m_img' :src="playList[currentIndex] ? playList[currentIndex].m_img : ''" alt="">
         <a href="javascript:;" class="mask"></a>
       </div>
       <!-- 播放信息显示 -->
       <div class="play">
         <div class="words">
-          <a href="javascript:;" class="name f-thide" :title="playList[currentIndex].m_name || ''">{{playList[currentIndex].m_name || ''}}</a>
-          <a  href="javascript:;" class="by f-thide">{{playList[currentIndex].m_by || ''}}</a>
-          <a href="javascript:;" class="src" :title="playList[currentIndex].m_from || ''"></a>
+          <a href="javascript:;" class="name f-thide" :title="name">{{name}}</a>
+          <a  href="javascript:;" class="by f-thide">{{by}}</a>
+          <a href="javascript:;" class="src" title=""></a>
         </div>
         <div class="m-pbar">
           <m-prog 
@@ -92,15 +92,17 @@ export default {
       m_pScale:0.0,
       showVol:false,
       m_url:'',
-      idList:[1466643383],
+      name:'',
+      by:'',
+      idList:[],
       playList:[
-        {
-          "m_id":1466643383,
-          "m_name":"祝我快乐",
-          "m_by":"汪苏泷",
-          "m_img":"https://p1.music.126.net/jBAh_0-ErI-nhZCexazjQA==/109951165181706528.jpg",
-          // "m_url":"http://m7.music.126.net/20200803174407/f4261f987301f3c0fa84977b96ca8c92/ymusic/obj/w5zDlMODwrDDiGjCn8Ky/3419125426/11d6/1b3f/46fa/4d03e653ba8c15dc62a6db8357ad6373.mp3"
-        }
+        // {
+        //   "m_id":1466643383,
+        //   "m_name":"祝我快乐",
+        //   "m_by":"汪苏泷",
+        //   "m_img":"https://p1.music.126.net/jBAh_0-ErI-nhZCexazjQA==/109951165181706528.jpg",
+        //   // "m_url":"http://m7.music.126.net/20200803174407/f4261f987301f3c0fa84977b96ca8c92/ymusic/obj/w5zDlMODwrDDiGjCn8Ky/3419125426/11d6/1b3f/46fa/4d03e653ba8c15dc62a6db8357ad6373.mp3"
+        // }
       ]
 
     }
@@ -110,12 +112,18 @@ export default {
     this.$bus.$on('playAMusic',this.playAMusic) // payload: {id:String}
     this.$bus.$on('addMusics',this.addMusics) // payload:{musics:Array,now:boolean}
     this.$bus.$on('toggleList',this.toggleList) // payload:ids:Array
+    if(this.playList.length){
+      this.name = this.playList[0].m_name;
+      this.by = this.playList[0].m_by;
+    }
   },
   methods:{
     // 设置播放列表并立即播放
     playAMusic(id){
       // 如果 原列表没有该音乐
       if(this.idList.indexOf(id) === -1){
+        // 说明正在加载
+        this.name = '正在加载中...'
         // 得到该歌的信息
         _getSongsDetail(id).then(res=>{ 
           // console.log(res);
@@ -127,10 +135,13 @@ export default {
           
         }).then(res=>{ // 成功得到该歌曲的URL
           this.$toast.show('success', `加载音乐成功，正在尝试播放`)
-          // 设置当前下标
-          this.currentIndex = this.idList.indexOf(id)
           // 播放
           this.m_url = res.data[0].url
+          // 设置当前下标
+          this.currentIndex = this.idList.indexOf(id)
+          // 设置播放信息
+          this.name = this.playList[this.currentIndex].m_name;
+          this.by = this.playList[this.currentIndex].m_by;
           this.playM()
         }).catch(err=>{
           this.$toast.show('warn', `网络异常，无法获取音乐数据`)
@@ -161,7 +172,6 @@ export default {
         // 如果现在播放，获取该歌单的第一个歌的URL，播放他
         if(payload.now){
           return _getMusicUrl(payload.musicids[0])
-          
         }else{
           return 0
         }
@@ -175,6 +185,9 @@ export default {
         console.log(res);
         this.m_url = res.data.url
         this.currentIndex = this.idList.indexOf(payload.musicids[0])
+        // 设置播放信息
+        this.name = this.playList[this.currentIndex].m_name;
+        this.by = this.playList[this.currentIndex].m_by;
       }).catch(err=>{
         this.$toast.thShow('warn', `网络异常，无法获取音乐数据`)
         console.log(err);
@@ -220,6 +233,9 @@ export default {
         console.log(res);
         this.m_url = res.data[0].url
         this.currentIndex = 0
+        // 设置播放信息
+        this.name = this.playList[this.currentIndex].m_name;
+        this.by = this.playList[this.currentIndex].m_by;
       }).catch((err)=>{
         this.$toast.thShow('warn', `网络异常，无法添加音乐至列表`)
         console.log(err);
@@ -267,6 +283,9 @@ export default {
         console.log('dedao');
         this.m_url = res.data[0].url
         this.currentIndex = curI;
+        // 设置播放信息
+        this.name = this.playList[this.currentIndex].m_name;
+        this.by = this.playList[this.currentIndex].m_by;
         
         // this.playM();
       }).catch(err=>{

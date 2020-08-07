@@ -24,13 +24,13 @@ const routes = [
         component: Recommend
       },
       {
-        path: '/discover/topList',
-        name: 'topList',
+        path: '/discover/toplist',
+        name: 'toplist',
         component: TopList
       },
       {
-        path: '/discover/playList',
-        name: 'playList',
+        path: '/discover/playlist',
+        name: 'playlist',
         component: PlayList
         
       },

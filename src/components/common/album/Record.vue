@@ -2,9 +2,9 @@
   <div class="record">
     <div class="pic">
       <img class="rd-p" :src="rdInfo.picUrl" alt="">
-      <a href="javascript:;" class="bg msk mska-2" @click="thGetDetail(rdInfo.id)"></a>
+      <a href="javascript:;" class="bg msk mska-2" @click="thGetRecord(rdInfo.id)"></a>
       
-      <!-- <a href="javascript:;" class="icon-play"></a> -->
+      <a href="javascript:;" class="icon-play" @click="plyRd(rdInfo.id)"></a>
       
     </div>
     <p class="name f-thide">
@@ -18,6 +18,7 @@
 </template>
 <script>
 import {throttle} from 'assets/Tools.js'
+import {_getMusicListDetail} from 'network/detail.js'
 export default {
   name:'record',
   props:{
@@ -43,6 +44,23 @@ export default {
       let thGet = throttle(this.getRecord, 1000);
       thGet(id);
     },
+    plyRd(id){
+      // 获取歌单歌曲信息
+      _getMusicListDetail(id).then(res => {
+        // 提取出所有歌的id
+        const idList = res.playlist.trackIds.map(val=>{
+          // console.log(val);
+          return val.id
+        })
+        // console.log(idList);
+        // this.$bus.$emit('toggleList', idList)
+        this.$audio.toggleList(idList)
+        // console.log('***********');
+        // console.log(this.lst);
+      }).catch(err=>{
+        this.$toast.thShow('warn',err);
+      })
+    }
   }
 }
 </script>
@@ -73,12 +91,20 @@ export default {
         // background-position: 0 -570px;
       }
       .icon-play{
-        right: 10px;
-        bottom: 5px;
+        display: none;
+        position: absolute;
+        right: 5px;
+        bottom: 6px;
         width: 22px;
         height: 22px;
-        background-position: 0 -110px;
+        background-position: 0 -85px;
         background-image: url('~assets/img/iconall.png');
+        &:hover{
+          background-position: 0 -110px;
+        }
+      }
+      &:hover .icon-play{
+        display: block;
       }
     }
     .name,.by {

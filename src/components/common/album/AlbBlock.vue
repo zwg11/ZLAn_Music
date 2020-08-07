@@ -54,7 +54,8 @@ export default {
           return val.id
         })
         // console.log(idList);
-        this.$bus.$emit('toggleList', idList)
+        // this.$bus.$emit('toggleList', idList)
+        this.$audio.toggleList(idList)
         // console.log('***********');
         // console.log(this.lst);
       }).catch(err=>{

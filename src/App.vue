@@ -2,18 +2,21 @@
   <div id="app">
     <nav-header></nav-header>
     <router-view></router-view>
-    <audio-bar></audio-bar>
+    <nav-footer></nav-footer>
+    <!-- <audio-bar></audio-bar> -->
   </div>
 </template>
 
 <script>
-import AudioBar from 'components/content/audio/AudioBar'
+// import AudioBar from 'components/content/audio/AudioBar'
 import NavHeader from 'components/common/NavHeader'
+import NavFooter from 'components/common/NavFooter'
 export default {
   name: 'App',
   components: {
-    AudioBar,
-    NavHeader
+    // AudioBar,
+    NavHeader,
+    NavFooter
   }
 }
 </script>
@@ -32,6 +35,7 @@ body,html{
   text-align: center;
   color: #2c3e50;
   min-height: 100vh;
+  // background-color: #f7f7f7;
   /* margin-top: 60px; */
 }
 </style>

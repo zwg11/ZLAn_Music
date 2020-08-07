@@ -115,3 +115,22 @@ export function _getTopLists(){
         url:'/toplist/detail'
     })
 }
+/** 获取热门歌手 */
+export function _getTopArtists(limit=30,offset=0){
+    return request({
+        url: '/top/artists',
+        params:{
+            limit,
+            offset
+        }
+    })
+}
+/** 获取热门主播 */
+export function _getTopAnchors(limit=30){
+    return request({
+        url: '/dj/toplist/popular',
+        params:{
+            limit
+        }
+    })
+}

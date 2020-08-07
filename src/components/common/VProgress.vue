@@ -1,7 +1,7 @@
 <template>
   <div class="vprogress" ref="tolPg">
-    <div id="vcur" ref="curPg">
-      <div id="vbtn"></div>
+    <div ref="vcur" id="vcur">
+      <div ref="vbtn" id="vbtn"></div>
     </div>
   </div>
 </template>
@@ -18,15 +18,21 @@ export default {
     }
   },
   mounted(){
-    document.querySelector('#vcur').style.width = (this.scale * 100) + '%';
-    let btn = document.getElementById('vbtn');
-    btn.addEventListener('mousedown', this.changeScale)
+    // document.querySelector('#vcur').style.width = (this.scale * 100) + '%';
+    this.$refs.vcur.style.width = (this.scale * 100) + '%';
+    // let btn = document.getElementById('vbtn');
+    this.$refs.vbtn.addEventListener('mousedown', this.changeScale)
+    // btn.addEventListener('mousedown', this.changeScale)
   },
   methods:{
     changeScale(e){
+      console.log('volume drag');
       this.isOnDrag = true;
       this.sx = e.clientX;
-      this.sw = parseInt(window.getComputedStyle(document.querySelector('#vcur')).width, 10);
+      
+      this.sw = parseInt(window.getComputedStyle(this.$refs.vcur).width, 10);
+      // this.sw = parseInt(window.getComputedStyle(document.querySelector('#vcur')).width, 10);
+
       
       document.documentElement.addEventListener('mousemove', this.onDrag)
       document.documentElement.addEventListener('mouseup', this.stopDrag)
@@ -34,9 +40,9 @@ export default {
     },
     onDrag(e){
       let newWidth = this.sw + e.clientX - this.sx;
-      document.querySelector('#vcur').style.width = newWidth + 'px';
+      this.$refs.vcur.style.width = newWidth + 'px';
       // 更新scale为当前宽度除以总宽度
-      this.scale = parseInt(getStyle('#vcur').width)/parseInt(getStyle('.vprogress').width);
+      this.scale = parseInt(getStyle(document.getElementById('vcur')).width)/parseInt(getStyle(document.querySelector('.vprogress')).width);
       // 通知父组件
       this.$emit('volChange', this.scale);
     },

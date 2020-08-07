@@ -5,8 +5,8 @@ export function formatSecond(s){
   let res = (minute < 10 ? '0' + minute:''+minute) + ':' + (second < 10 ? '0' + second:''+second);
   return res;
 }
-export function getStyle(element){
-  return window.getComputedStyle(document.querySelector(element))
+export function getStyle(el){
+  return window.getComputedStyle(el)
 }
 
 export function debounce(fn, delay){

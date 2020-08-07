@@ -1,7 +1,7 @@
 <template>
   <div class="m-progress" ref="tolPg">
-    <div class="cur" ref="curPg">
-      <div id="btn"></div>
+    <div class="cur" ref="mcur">
+      <div id="btn" ref="btn"></div>
     </div>
   </div>
 </template>
@@ -27,14 +27,16 @@ export default {
     }
   },
   mounted(){
-    console.log(document.querySelector('.cur'));
-    document.querySelector('.cur').style.width = (this.scale * 100) + '%'
+    console.log(this.$refs.mcur);
+    // document.querySelector('.cur').style.width = (this.scale * 100) + '%'
+    this.$refs.mcur.style.width = (this.scale * 100) + '%';
   },
   methods:{
     changeScale(e){
       this.isOnDrag = true;
       this.sx = e.clientX;
-      this.sw = parseInt(window.getComputedStyle(document.querySelector('.cur')).width, 10);
+      // this.sw = parseInt(window.getComputedStyle(document.querySelector('.cur')).width, 10);
+      this.sw = parseInt(window.getComputedStyle(this.$refs.mcur.style.width, 10))
       
       document.documentElement.addEventListener('mousemove', this.onDrag)
       document.documentElement.addEventListener('mouseup', this.stopDrag)
@@ -42,13 +44,14 @@ export default {
     },
     onDrag(e){
       let newWidth = this.sw + e.clientX - this.sx;
-      document.querySelector('.cur').style.width = newWidth + 'px';
+      // document.querySelector('.cur').style.width = newWidth + 'px';
+      this.$refs.mcur.style.width = newWidth + 'px';
     },
     stopDrag(){
       document.documentElement.removeEventListener('mousemove', this.onDrag);
       document.documentElement.removeEventListener('mouseup', this.stopDrag);
       // 更新scale为当前宽度除以总宽度
-      const scale = parseInt(getStyle('.cur').width)/parseInt(getStyle('.m-progress').width);
+      const scale = parseInt(getStyle(this.$refs.mcur).width)/parseInt(getStyle(this.$refs.tolPg).width);
       // 通知父组件
       this.$emit('scaleChange', scale);
       this.isOnDrag = false;
@@ -60,12 +63,14 @@ export default {
       if(parseFloat(newVal) > 0 && !this.isOnDrag){
         // 设置当前进度条长度
         // console.log(`scale:${newVal}`);
-        document.querySelector('.cur').style.width = `${newVal * 100}%`
+        // document.querySelector('.cur').style.width = `${newVal * 100}%`
+        this.$refs.mcur.style.width = `${newVal * 100}%`
       }
     },
     isDragEnable:{
       handler(newVal){
-        let btn = document.getElementById('btn');
+        // let btn = document.getElementById('btn');
+        let btn = this.$refs.btn;
         // console.log(newVal);
         if(newVal){
           btn.addEventListener('mousedown', this.changeScale)

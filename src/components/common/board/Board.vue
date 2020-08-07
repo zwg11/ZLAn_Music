@@ -58,8 +58,14 @@ export default {
     align-items: center;
     .bd{
       width: 33%;
-      // flex: 1;
+      border: 1px solid #dadada;
+      border-right: none;
+      border-radius: 2px;
+      &:nth-child(3){
+        border-right: 1px solid #dadada;
+      }
     }
+
   }
 }
 </style>
