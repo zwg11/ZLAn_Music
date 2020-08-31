@@ -51,14 +51,33 @@ export function _getMusicListHot(){
     })
 }
 
+/**获取歌单的所有tag */
+export function _getAllTag(){
+    return request({
+        url:'/playlist/catlist'
+    })
+}
+
 /**获取不同tag的精品歌单 */
-export function _getHighquality(cat,limit){
+export function _getHighquality(cat='全部',limit=20, time = new Date().getTime()){
     return request({
         url:'/top/playlist/highquality',
         params:{
-            cat:cat,
+            cat:cat || '全部',
             limit:limit,
-            time:new Date().getTime()
+            time:time
+        }
+    })
+}
+
+/**获取不同tag的网友精选歌单 */
+export function _getHighqualityFromNet(cat='全部',limit=20, offset=0){
+    return request({
+        url:'/top/playlist',
+        params:{
+            cat:cat || '全部',
+            limit:limit,
+            offset:offset
         }
     })
 }
@@ -133,4 +152,16 @@ export function _getTopAnchors(limit=30){
             limit
         }
     })
+}
+
+
+export function singleAlbum(albInfo){
+    this.name = albInfo.name;
+    this.id = albInfo.id;
+    this.userId = albInfo.userId;
+    this.playCount = albInfo.playCount;
+    this.creator = albInfo.creator.nickname;
+    this.picUrl = albInfo.coverImgUrl;
+    this.updateTime = albInfo.updateTime;
+
 }

@@ -4,7 +4,12 @@
       title="榜单"
       :hasMore='true'
       @to='toMore'
-    ></list-header>
+    >
+      <template #more>
+        <a href="javascript:;" class="a-hover" @click="toMore" >更多</a>
+        <i class="icon">&nbsp;</i>
+      </template>
+    </list-header>
     <div class="bds">
 
       <div class="bd" v-for="(rk,ind) in rkList" :key="ind">
@@ -44,6 +49,8 @@ export default {
   },
   methods:{
     toMore(){
+      this.$store.commit('setSubIndex',1);
+      this.$router.push('/discover/toplist')
       console.log('to more');
     }
   }
@@ -66,6 +73,13 @@ export default {
       }
     }
 
+  }
+  .icon {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-left: 4px;
+    background-position: 0 -240px;
   }
 }
 </style>

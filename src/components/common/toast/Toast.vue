@@ -41,6 +41,7 @@ export default {
   transform: translateX(-50%);
   border-radius: 5px;
   background-color: whitesmoke;
+  padding: 10px 20px;
   transition: all .5s linear;
   &.default{
     color: black;

@@ -9,7 +9,7 @@ export function getStyle(el){
   return window.getComputedStyle(el)
 }
 
-export function debounce(fn, delay){
+export function debounce(fn, delay=500){
   let timer = null;
   return function(){
     let that = this, args = arguments
@@ -20,7 +20,7 @@ export function debounce(fn, delay){
   }
 }
 
-export function throttle(fn, interval){
+export function throttle(fn, interval=1000){
   let later = 0;
   return function(){
     let that = this, args = arguments;

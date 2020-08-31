@@ -2,9 +2,12 @@
   <div class="leaderboard">
     <list-header
       title="新碟上架"
-      :hasMore='true'
-      @to='toMore'
-    ></list-header>
+    >
+      <template #more>
+        <a href="javascript:;" class="a-hover" @click="toMore" >更多</a>
+        <i class="icon">&nbsp;</i>
+      </template>
+    </list-header>
     <div class="boards">
       <dl>
         <dt></dt>
@@ -21,6 +24,7 @@
   </div>
 </template>
 <script>
+// 该文件未被使用
 import ListHeader from 'components/common/ListHeader.vue'
 export default {
   name: 'leaderboard',
@@ -39,7 +43,9 @@ export default {
   },
   methods:{
     toMore(){
-      this.$bus.$emit('discoverToChild',1)
+      // this.$bus.$emit('discoverToChild',1)
+      this.$store.commit('setSubIndex',1);
+      this.$router.push('/discover/album')
     }
   }
 }
@@ -85,6 +91,13 @@ export default {
       &:hover{
         background-position: -267px -268px;
       }
+    }
+    .icon {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-left: 4px;
+      background-position: 0 -240px;
     }
   }
 </style>

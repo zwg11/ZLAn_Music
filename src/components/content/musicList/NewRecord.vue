@@ -2,9 +2,12 @@
   <div class="new-record">
     <list-header
       title="新碟上架"
-      :hasMore='true'
-      @to='toMore'
-    ></list-header>
+    >
+      <template #more>
+        <a href="javascript:;" class="a-hover" @click="toMore" >更多</a>
+        <i class="icon">&nbsp;</i>
+      </template>
+    </list-header>
     <div class="rds-block">
       <a href="javascript:;" class="pre"></a>
       <ul class="rd-list">
@@ -38,7 +41,9 @@ export default {
   },
   methods:{
     toMore(){
-      this.$bus.$emit('discoverToChild',5)
+      // this.$bus.$emit('discoverToChild',5)
+      this.$store.commit('setSubIndex',5);
+      this.$router.push('/discover/album')
     }
   }
 }
@@ -82,6 +87,13 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+    .icon {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-left: 4px;
+      background-position: 0 -240px;
     }
   }
 </style>

@@ -78,12 +78,13 @@ export function _getSongsDetail(arr){
 /**对歌曲数据进行封装 */
 export class songDetail{
     constructor(songs){
-        this.id=songs[0].id;
-        this.name=songs[0].name;
-        this.album=songs[0].al.name;
-        this.song=songs[0].ar[0].name;
-        this.pic=songs[0].al.picUrl;
-        this.time=formatSecond(songs[0].dt)
+        this.id=songs.id;
+        this.name=songs.name;
+        this.album=songs.al.name;
+        this.song=songs.ar[0].name;
+        this.artistId = songs.ar[0].id
+        this.pic=songs.al.picUrl;
+        this.time=formatSecond(songs.dt/1000)
     }
 }
 
@@ -102,14 +103,18 @@ export class songInf{
 
 /**歌单基础信息 */
 export class baseInfo{
-    constructor(playlist){
+    constructor(playlist, id){
         this.img=playlist.coverImgUrl;
-        this.title=playlist.description;
+        this.description=playlist.description;
         this.name=playlist.name;
         this.shareCount=playlist.shareCount;
         this.subscribedCount=playlist.subscribedCount;
         this.playCount=playlist.playCount;
         this.trackCount=playlist.trackCount;
         this.tags=playlist.tags[0];
+        this.updateTime = playlist.updateTime;
+        this.description = playlist.description
+        this.commentCount = playlist.commentCount
+        this.id = id;
     }
 }

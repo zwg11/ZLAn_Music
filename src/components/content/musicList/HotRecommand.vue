@@ -2,9 +2,15 @@
   <div class="hot-recommand">
     <list-header
       title="热门推荐"
-      :hasMore='true'
-      @to='toMore'
-    ></list-header>
+    >
+      <template>
+        <a class="a-hover comm-list" href="" v-for="(title,index) in hotRecommandClass " :key='index'>{{title}}</a>
+      </template>
+      <template #more>
+        <a href="javascript:;" class="a-hover" @click="toMore" >更多</a>
+        <i class="icon">&nbsp;</i>
+      </template>
+    </list-header>
     <div class="album-list">
       <ul class="li-list">
         <li v-for="(m,ind) in mList" :key="ind">
@@ -34,13 +40,14 @@ export default {
   },
   data(){
     return{
-      
+      hotRecommandClass:['华语', '流行', '摇滚', '民谣', '电子']
     }
   },
   
   methods:{
     toMore(){
-      this.$bus.$emit('discoverToChild',2)
+      this.$store.commit('setSubIndex',2)
+      this.$router.push('/discover/playList')
     }
   }
 }
@@ -50,11 +57,25 @@ export default {
 @import 'assets/css/config.scss';
   .hot-recommand{
     margin-bottom: 50px;
+    .comm-list{
+      padding: 0 20px;
+      border-right: 1px solid lightgray;
+      &:last-child{
+        border: none;
+      }
+    }
     .li-list{
       display: flex;
       justify-content: space-around;
       align-items: flex-start;
       flex-wrap: wrap;
+    }
+    .icon {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-left: 4px;
+      background-position: 0 -240px;
     }
     
   }

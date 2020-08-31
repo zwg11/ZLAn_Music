@@ -109,9 +109,9 @@ export default {
   },
   mounted(){
     this.$refs.audio.volume = 0.2
-    this.$bus.$on('playAMusic',this.playAMusic) // payload: {id:String}
-    this.$bus.$on('addMusics',this.addMusics) // payload:{musics:Array,now:boolean}
-    this.$bus.$on('toggleList',this.toggleList) // payload:ids:Array
+    // this.$bus.$on('playAMusic',this.playAMusic) // payload: {id:String}
+    // this.$bus.$on('addMusics',this.addMusics) // payload:{musics:Array,now:boolean}
+    // this.$bus.$on('toggleList',this.toggleList) // payload:ids:Array
     if(this.playList.length){
       this.name = this.playList[0].m_name;
       this.by = this.playList[0].m_by;
@@ -121,7 +121,8 @@ export default {
     // 设置播放列表并立即播放
     playAMusic(id){
       // 如果 原列表没有该音乐
-      if(this.idList.indexOf(id) === -1){
+      let ind = this.idList.indexOf(id)
+      if(ind === -1){
         // 说明正在加载
         this.name = '正在加载中...'
         // 得到该歌的信息
@@ -144,6 +145,24 @@ export default {
           this.by = this.playList[this.currentIndex].m_by;
           this.playM()
         }).catch(err=>{
+          this.name = ''
+          this.$toast.show('warn', `网络异常，无法获取音乐数据`)
+          console.log(err);
+        })
+      }else{
+        let inf = this.playList[ind];
+        _getMusicUrl(inf.m_id).then(res=>{ // 成功得到该歌曲的URL
+          this.$toast.show('success', `加载音乐成功，正在尝试播放`)
+          // 播放
+          this.m_url = res.data[0].url
+          // 设置当前下标
+          this.currentIndex = this.idList.indexOf(id)
+          // 设置播放信息
+          this.name = this.playList[this.currentIndex].m_name;
+          this.by = this.playList[this.currentIndex].m_by;
+          this.playM()
+        }).catch(err=>{
+          this.name = ''
           this.$toast.show('warn', `网络异常，无法获取音乐数据`)
           console.log(err);
         })
@@ -332,8 +351,8 @@ export default {
     }
   },
   beforeDestroy(){
-    this.$bus.$off('playAMusic')
-    this.$bus.$off('addMusics')
+    // this.$bus.$off('playAMusic')
+    // this.$bus.$off('addMusics')
   }
 }
 </script>

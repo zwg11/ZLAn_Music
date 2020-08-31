@@ -42,20 +42,33 @@ export default {
       currentIndex:0,
       subNavList:['推荐','排行榜','歌单','主播电台','歌手','新碟上架'],
       currentSubIndex:0,
-      routeTo:['/','/discover/topList','/discover/playList','/discover/djradio','/discover/artist','/discover/album']
-    }
-  },
-  methods:{
-    toRoute(ind){
-      this.currentSubIndex = ind;
-      this.$router.push(this.routeTo[ind])
+      routeTo:['/discover','/discover/topList','/discover/playList','/discover/djradio','/discover/artist','/discover/album']
     }
   },
   mounted(){
-    this.$bus.$on('discoverToChild',this.toRoute)
+    this.setCurrentSubIndex()
   },
-  beforeDestroy(){
-    this.$bus.$off('discoverToChild');
+  methods:{
+    toRoute(ind){
+      console.log(`to route ${ind}`);
+      // this.currentSubIndex = ind;
+      this.$store.commit('setSubIndex',ind);
+      this.$router.push(this.routeTo[ind])
+    },
+    setCurrentSubIndex(){
+      console.log(window.location.hash.slice(1));
+      console.log(this.routeTo.indexOf(window.location.hash.slice(1)));
+      this.currentSubIndex = this.routeTo.indexOf(window.location.hash.slice(1))
+    }
+  },
+  computed:{
+    // currentSubIndex(){
+    //   console.log(window.location.hash);
+    //   return this.routeTo.indexOf(window.location.hash.slice(1))
+    // }
+  },
+  watch:{
+    '$route':'setCurrentSubIndex'
   }
 }
 </script>

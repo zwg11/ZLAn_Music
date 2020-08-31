@@ -1,12 +1,11 @@
 <template>
   <div class="list-header">
     <a class="v-hd fl" :class="{'plt':hasplt}">{{title}}</a>
-    <div class="l-tab fl">
+    <div class="fl">
       <slot></slot>
     </div>
-    <span class="more">
-      <a href="javascript:;" v-if="hasMore" @click="toUrl">更多</a>
-      <i class="icon">&nbsp;</i>
+    <span class="fr">
+      <slot name="more"></slot>
     </span>
   </div>
 </template>
@@ -18,20 +17,14 @@ export default {
       type: String,
       default: "歌单列表",
     },
-    hasMore: {
-      type: Boolean,
-      default: true,
-    },
     hasplt: {
       type: Boolean,
       default: true,
     },
   },
   methods: {
-    toUrl() {
-      this.$emit("to");
-    },
-  },
+    
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -43,9 +36,6 @@ export default {
   line-height: 35px;
   border-bottom: 2px solid $colorA;
   margin-bottom: 20px;
-  .l-tab {
-    float: left;
-  }
   .plt,.icon {
     background-image: url("~assets/img/index.png");
     vertical-align: middle;
@@ -60,19 +50,7 @@ export default {
   }
   .more {
     float: right;
-    a {
-      color: black;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
   }
-  .icon {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    margin-left: 4px;
-    background-position: 0 -240px;
-  }
+
 }
 </style>

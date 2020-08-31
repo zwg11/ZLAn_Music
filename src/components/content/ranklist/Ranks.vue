@@ -72,6 +72,9 @@ export default {
     zoom: 1;
     cursor: pointer;
   }
+  .item{
+    display: block;
+  }
   .img{
     display: block;
     width: 40px;

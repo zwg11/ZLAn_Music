@@ -19,10 +19,10 @@
 .fr{
   float: right;
 }
-// .clearfix:before,.clearfix:after{
-//   content:' ';
-//   display:table;
-// }
+.clearfix:before,.clearfix:after{
+  content:' ';
+  display:table;
+}
 .clearfix:after{
   clear: both;
 }
@@ -76,4 +76,58 @@
   width: 118px;
   height: 100px;
   background-position: 0 -570px;
+}
+
+.m-table th,.m-table .ply,.m-table .icn{
+  background: url('~assets/img/table.png');
+}
+.m-table .ply{
+  // float: left;
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+  background-position: 0 -103px;
+  &:hover{
+    background-position: 0 -128px;
+  }
+}
+.u-icn{
+  background: url('~assets/img/icon.png');
+}
+.u-icn-all{
+  background: url('~assets/img/iconall.png');
+}
+
+.b-button{
+  background: url('~assets/img/button2.png');
+}
+.b-add{
+  background-position: 0 -1588px;
+}
+.b-ply{
+  background-position: 0 -1622px;
+  &:hover{
+    background-position: -28px -1622px;
+  }
+}
+.b-i{
+  background-position: 0 -387px;
+  &:hover{
+    background-position: 0 -469px;
+    .b-ply{
+      background-position: -28px -1622px;
+    }
+  }
+}
+.b-line{
+  background-position: right -428px;
+  color: #fff;
+}
+
+.b-share,.b-fav,.b-download,.b-comment{
+  background-position: right -1020px;
+}
+
+.ind-button{
+  background: url('~assets/img/index.png');
 }

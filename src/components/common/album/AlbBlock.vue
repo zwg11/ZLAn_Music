@@ -2,7 +2,7 @@
   <div class="alb">
     <div class="pic">
       <img :src="albumInfo.picUrl" alt="">
-      <a href="javascript:;" class="bg" @click="thGetDetail(albumInfo.id)"></a>
+      <a href="javascript:;" class="msk msk-1" @click="thGetDetail(albumInfo.id)"></a>
       <div class="bottom">
 
         <span class="icon-headset"></span>
@@ -12,7 +12,10 @@
     </div>
     <p class="describe">
       <!-- <i class="icn" v-if="isIcn"></i> -->
-      <a class="dc" href="javascript:;">{{albumInfo.name}}</a>
+      <slot>
+
+        <a class="dc" href="javascript:;">{{albumInfo.name}}</a>
+      </slot>
     </p>
   </div>
 </template>
@@ -71,20 +74,11 @@ export default {
     width: 140px;
     .pic{
       height: 140px;
-      background-image: url('~assets/img/coverall.png');
-      background-position: 0 -537px;
+      // background-image: url('~assets/img/coverall.png');
+      // background-position: 0 -537px;
       color:#ccc;
       position: relative;
-      .bg{
-        background-image: url('~assets/img/coverall.png');
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: block;
-        background-position: 0 -0;
-      }
+      
       img{
         width: 140px;
         height: 140px;

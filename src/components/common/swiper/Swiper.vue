@@ -54,7 +54,7 @@ export default {
         if(page < 0){
 
           this.currentPage = len - 1;
-        }else if(page >= len-1){
+        }else if(page >= len){
           this.currentPage = 0
         }else{
           this.currentPage = page;

@@ -4,10 +4,17 @@
       <dt class="dtitle">
         <img class="j-img" :src="lst.coverImgUrl" alt="">
         <!-- <a href="javascript:;" class="msk msk-3"></a> -->
-        <a href="" class="a-hover title">
+        <div class="tit fl">
 
-          {{title}}
-        </a>
+          <a :href="'/#/discover/toplist?id=' + rankId" class="a-hover title">
+
+            {{title}}
+          </a>
+          <div class="opt">
+            <a href="javascript:;" class="ply ind-button" title="播放歌单" @click="plyAlb"></a>
+            <a href="javascript:;" class="fav ind-button" title="收藏"></a>
+          </div>
+        </div>
       </dt>
       <dd class="ddetail">
         <ul>
@@ -15,14 +22,14 @@
             <span class="no" :class="{'no-top':index<3}">{{index + 1}}</span>
             <a href="javascript:;" class="title f-thide a-hover" @click="getMUrl(dbd.id)">{{dbd.name}}</a>
             <div class="icns">
-              <a href="javascript:;" class="ply" @click="getMUrl(dbd.id)"></a>
-              <a href="javascript:;" class="add" @click="addMUrl([dbd.id])"></a>
-              <a href="javascript:;" class="fav"></a>
+              <a href="javascript:;" class="ply ind-button" @click="getMUrl(dbd.id)"></a>
+              <a href="javascript:;" class="add u-icn" @click="addMUrl([dbd.id])"></a>
+              <a href="javascript:;" class="fav ind-button"></a>
             </div>
           </li>
         </ul>
         <div class="ft">
-          <a href="javascript:;" class="to-all a-hover m-bg">查看全部></a>
+          <a :href="'/#/discover/toplist?id=' + rankId" class="to-all a-hover m-bg">查看全部></a>
         </div>
       </dd>
     </dl>
@@ -72,6 +79,18 @@ export default {
       console.log('添加');
       // this.$bus.$emit('addMusics',{'musicids':ids,now:false})
       this.$audio.addMusics({'musicids':ids,now:false})
+    },
+    // 播放歌单
+    plyAlb(){
+      console.log('play album');
+      
+      // 提取出所有歌的id
+      const idList = this.lst.trackIds.map(val=>{
+        // console.log(val);
+        return val.id
+      })
+      this.$audio.toggleList(idList)
+     
     }
   }
 }
@@ -90,12 +109,18 @@ export default {
       height: 80px;
       float: left;
     }
+    .tit{
+      margin: 6px 0 0 10px;
+    }
     .title{
       font-size: 14px;
       font-weight: bold;
       display: block;
       // text-align: left;
       padding-left: 10px;
+    }
+    .opt{
+      margin-left: 10px;
     }
   }
   .ddetail{
@@ -138,7 +163,6 @@ export default {
     display: none;
   }
   .ply,.fav{
-    background-image: url('~assets/img/index.png');
     float: left;
     margin-top: 7px;
     display: block;
